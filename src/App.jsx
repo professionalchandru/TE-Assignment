@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Table } from 'react-bootstrap';
+import toast, { Toaster } from 'react-hot-toast';
 import AddProject from './components/AddProject';
 
 const App = () => {
@@ -10,11 +11,28 @@ const App = () => {
 
   const [showAddProject, setShowAddProject] = useState(false);
 
-  useEffect(() => {
+  const [error, setError] = useState('')
 
-    let search = dataArray.filter((data) => data.name.includes(searchText) || data.description.includes(searchText) )
-    if(search) setFilteredArray(search);
+  useEffect(() => {
+    if(searchText.length){
+      let search = dataArray.filter((data) => data.name.includes(searchText) || data.description.includes(searchText) )
+      if(search) setFilteredArray(search);
+    }else {
+      setFilteredArray([])
+    }
   }, [searchText])
+
+  useEffect(() => {
+    if(error.length)
+      toast.error(error, {
+        style: {
+          borderRadius: '10px',
+          background: '#333',
+          color: '#fff'
+        },
+      duration: 4000
+      })
+  }, [error])
 
   const [dataArray, setDataArray] = useState([
     {
@@ -35,6 +53,7 @@ const App = () => {
       createdAt: new Date().toLocaleString()
     }
   ])
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +63,9 @@ const App = () => {
 
   return (
    <>
+    {/* Toast section */}
+    <div><Toaster/></div>
+
     {/* Table Section */}
     <section className='w-screen h-screen bg-white'>
 
@@ -132,48 +154,47 @@ const App = () => {
               </td>
             </tr>
           )
-        }) : null}
-          
-          {!filteredArray.length && dataArray.map((data, index) => {
-          return(
-            <tr key={index}>
-              <td style={{color: 'black'}}>
-                {data.name}
-              </td>
+        }) : 
+          dataArray.map((data, index) => {
+            return(
+              <tr key={index}>
+                <td style={{color: 'black'}}>
+                  {data.name}
+                </td>
 
-              <td style={{color: 'black'}}>
-                {data.description}
-              </td>
+                <td style={{color: 'black'}}>
+                  {data.description}
+                </td>
 
-              <td style={{color: 'black'}}>
-                {data.skill.map((item, index) => {
-                  if(index !== data.skill.length -1){
-                    return(
-                      `${item}, ` 
-                    )
-                  }else {
-                    return(
-                      item
-                    )
-                  }
-                })}
-              </td>
+                <td style={{color: 'black'}}>
+                  {data.skill.map((item, index) => {
+                    if(index !== data.skill.length -1){
+                      return(
+                        `${item}, ` 
+                      )
+                    }else {
+                      return(
+                        item
+                      )
+                    }
+                  })}
+                </td>
 
-              <td style={{color: 'black'}}>
-                {data.members}
-              </td>
+                <td style={{color: 'black'}}>
+                  {data.members}
+                </td>
 
-              <td style={{color: 'black'}}>
-                {data.isActive ? 'Yes' : 'No'}
-              </td>
-              
-              <td style={{color: 'black'}}>
-                {data.createdAt}
-              </td>
-            </tr>
-          )
-        })}
-          
+                <td style={{color: 'black'}}>
+                  {data.isActive ? 'Yes' : 'No'}
+                </td>
+                
+                <td style={{color: 'black'}}>
+                  {data.createdAt}
+                </td>
+              </tr>
+            )
+            })
+          } 
         </tbody>
       </Table>
 
@@ -182,7 +203,7 @@ const App = () => {
     {/* Add Project Section */}
     {showAddProject &&
       <section>
-        <AddProject setDataArray={setDataArray} setShowAddProject={setShowAddProject} />
+        <AddProject setDataArray={setDataArray} setShowAddProject={setShowAddProject} setError={setError} />
       </section>
     }
 

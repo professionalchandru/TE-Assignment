@@ -3,12 +3,13 @@ import { Button, Form } from 'react-bootstrap'
 
 import Select from 'react-select'
 
-const AddProject = ({setDataArray, setShowAddProject}) => {
+const AddProject = ({setDataArray, setShowAddProject, setError}) => {
 
     const options = [
         { value: 'reactjs', label: 'React Js' },
         { value: 'nodejs', label: 'Node Js' },
-        { value: 'gatsbyjs', label: 'Gatsby Js' }
+        { value: 'gatsbyjs', label: 'Gatsby Js' },
+        { value: 'mongodb', label: 'Mongo DB' },
       ]
 
     const [name, setName] =useState('');
@@ -19,8 +20,25 @@ const AddProject = ({setDataArray, setShowAddProject}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         let newSkills = []
-        skills.map((item, index) => newSkills.push(item.label))
+        skills.map((item) => newSkills.push(item.label))
+
+
+        // Validating phase
+        let validateExp = /^([a-zA-Z0-9_]){2,30}$/
+        if(!validateExp.test(name)){
+            setError('Name should contains only letters, numbers, and _  ')
+            console.log('Name should contains only letters, numbers, and _  ')
+            return;
+        }
+
+        if(newSkills.length === 0) {
+            setError('Atleast one skill should be selected ')
+            console.log('Atleast one skill should be selected')
+            return;
+        }
+
         let obj = {
             name: name,
             description: desc,
@@ -29,8 +47,10 @@ const AddProject = ({setDataArray, setShowAddProject}) => {
             isActive: isActive,
             createdAt: new Date().toLocaleString()
         }
+        
         setDataArray((state) => [...state, obj ]);
         setShowAddProject(false)
+        setError('')
     }
 
     const handleMultiChange = (event) => {
