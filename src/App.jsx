@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table } from 'react-bootstrap';
+// import { Button, Table } from 'react-bootstrap';
 import toast, { Toaster } from 'react-hot-toast';
 import AddProject from './components/AddProject';
 
@@ -53,12 +53,7 @@ const App = () => {
       createdAt: new Date().toLocaleString()
     }
   ])
-  
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('submit clicked');
-  } 
 
 
   return (
@@ -70,103 +65,65 @@ const App = () => {
     <section className='w-screen h-screen bg-white'>
 
       {/* Top section */}
-      <div className='px-5 my-5 d-flex flex-row justify-content-between'>
-        <Button onClick={() => setShowAddProject(!showAddProject)} variant="primary">
+      <div className='w-4/5 mt-20 mx-auto flex items-center justify-between'>
+        <button onClick={() => setShowAddProject(!showAddProject)} 
+          className=" px-8 py-3 bg-blue-600 text-white font-medium text-base rounded-md"
+        >
           Add Project
-        </Button>
+        </button>
         
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <input 
-            type="text" 
-            className='px-5 py-2 rounded border border-black'
-            placeholder='Search...'
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </form>
+        <input 
+          type="text" 
+          className='px-3 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-400'
+          placeholder='Search...'
+          onChange={(e) => setSearchText(e.target.value)}
+        />
 
       </div>
-    
-      <Table striped bordered hover size="sm" className='container'>
-        <thead>
-          <tr>
-            <th  style={{color: 'black'}}>
-              Project Name
-            </th>
 
-            <th style={{color: 'black'}}>
-              Project	Description
-            </th>
+      <div className='w-4/5 mx-auto my-10 '>
+        <table className='w-full'>
+          <thead className='bg-blue-500 text-white text-left'>
+            <tr>
+              <th className='px-2 py-3 border-r border-white' >
+                Project Name
+              </th>
 
-            <th style={{color: 'black'}}>
-              Skill	Set
-            </th>
+              <th className='px-2 py-3 border-r border-white'>
+                Project	Description
+              </th>
 
-            <th style={{color: 'black'}}>
-              No of Members
-            </th>
+              <th className='px-2 py-3 border-r border-white'>
+                Skill	Set
+              </th>
 
-            <th style={{color: 'black'}}>
-              Is	Active?
-            </th>
+              <th className='px-2 py-3 border-r border-white'>
+                No of Members
+              </th>
 
-            <th style={{color: 'black'}}>
-              Created At
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+              <th className='px-2 py-3 border-r border-white'>
+                Is	Active?
+              </th>
 
-        {filteredArray.length ? filteredArray.map((data, index) => {
-          return(
-            <tr key={index}>
-              <td style={{color: 'black'}}>
-                {data.name}
-              </td>
-
-              <td style={{color: 'black'}}>
-                {data.description}
-              </td>
-
-              <td style={{color: 'black'}}>
-                {data.skill.map((item, index) => {
-                  if(index !== data.skill.length -1){
-                    return(
-                      `${item}, ` 
-                    )
-                  }else {
-                    return(
-                      item
-                    )
-                  }
-                })}
-              </td>
-
-              <td style={{color: 'black'}}>
-                {data.members}
-              </td>
-
-              <td style={{color: 'black'}}>
-                {data.isActive ? 'Yes' : 'No'}
-              </td>
-              
-              <td style={{color: 'black'}}>
-                {data.createdAt}
-              </td>
+              <th className='px-2 py-3 border-r border-white'>
+                Created At
+              </th>
             </tr>
-          )
-        }) : 
-          dataArray.map((data, index) => {
+          </thead>
+          <tbody>
+
+          {filteredArray.length ? filteredArray.map((data, index) => {
             return(
-              <tr key={index}>
-                <td style={{color: 'black'}}>
+              <tr key={index} className="bg-indigo-100 hover:bg-indigo-200 border border-white">
+                <td className='px-2 py-3 border-r border-white'>
                   {data.name}
                 </td>
 
-                <td style={{color: 'black'}}>
+                <td className='px-2 py-3 border-r border-white'>
                   {data.description}
                 </td>
 
-                <td style={{color: 'black'}}>
+                <td className='px-2 py-3 border-r border-white'>
                   {data.skill.map((item, index) => {
                     if(index !== data.skill.length -1){
                       return(
@@ -180,23 +137,63 @@ const App = () => {
                   })}
                 </td>
 
-                <td style={{color: 'black'}}>
+                <td className='px-2 py-3 border-r border-white'>
                   {data.members}
                 </td>
 
-                <td style={{color: 'black'}}>
+                <td className='px-2 py-3 border-r border-white'>
                   {data.isActive ? 'Yes' : 'No'}
                 </td>
                 
-                <td style={{color: 'black'}}>
+                <td className='px-2 py-3 border-r border-white'>
                   {data.createdAt}
                 </td>
               </tr>
             )
-            })
-          } 
-        </tbody>
-      </Table>
+          }) : 
+            dataArray.map((data, index) => {
+              return(
+                <tr key={index} className="bg-indigo-100 hover:bg-indigo-200 border border-white">
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.name}
+                  </td>
+
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.description}
+                  </td>
+
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.skill.map((item, index) => {
+                      if(index !== data.skill.length -1){
+                        return(
+                          `${item}, ` 
+                        )
+                      }else {
+                        return(
+                          item
+                        )
+                      }
+                    })}
+                  </td>
+
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.members}
+                  </td>
+
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.isActive ? 'Yes' : 'No'}
+                  </td>
+                  
+                  <td className='px-2 py-3 border-r border-white'>
+                    {data.createdAt}
+                  </td>
+                </tr>
+              )
+              })
+            } 
+          </tbody>
+        </table>
+      </div>
 
     </section>
 
