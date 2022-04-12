@@ -62,7 +62,7 @@ const App = () => {
     <div><Toaster/></div>
 
     {/* Table Section */}
-    <section className='w-screen h-screen bg-white'>
+    <section className='w-screen h-full bg-white'>
 
       {/* Top section */}
       <div className='w-4/5 mt-20 mx-auto flex items-center justify-between'>
