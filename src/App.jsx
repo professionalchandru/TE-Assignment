@@ -11,6 +11,10 @@ const App = () => {
 
   const [showAddProject, setShowAddProject] = useState(false);
 
+  const [editData, setEditData] = useState({})
+
+  const [isEdit, setIsEdit] = useState(false);
+
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -54,7 +58,11 @@ const App = () => {
     }
   ])
 
-
+  const handleEdit = (index) => {
+    setIsEdit(true)
+    setShowAddProject(true)
+    setEditData(dataArray.filter((item, ind) => ind === index )[0])
+  }
 
   return (
    <>
@@ -108,6 +116,10 @@ const App = () => {
               <th className='px-2 py-3 border-r border-white'>
                 Created At
               </th>
+
+              <th className='px-2 py-3 border-r border-white'>
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +160,10 @@ const App = () => {
                 <td className='px-2 py-3 border-r border-white'>
                   {data.createdAt}
                 </td>
+
+                <td onClick={() => handleEdit(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
+                  Edit
+                </td>
               </tr>
             )
           }) : 
@@ -187,6 +203,10 @@ const App = () => {
                   <td className='px-2 py-3 border-r border-white'>
                     {data.createdAt}
                   </td>
+
+                  <td onClick={() => handleEdit(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
+                    Edit
+                  </td>
                 </tr>
               )
               })
@@ -200,7 +220,7 @@ const App = () => {
     {/* Add Project Section */}
     {showAddProject &&
       <section>
-        <AddProject setDataArray={setDataArray} setShowAddProject={setShowAddProject} setError={setError} />
+        <AddProject setEditData={setEditData} editData={editData} setIsEdit={setIsEdit} isEdit={isEdit} setDataArray={setDataArray} setShowAddProject={setShowAddProject} setError={setError} />
       </section>
     }
 

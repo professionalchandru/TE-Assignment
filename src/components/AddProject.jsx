@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 // import { Button, Form } from 'react-bootstrap'
 
 import Select from 'react-select'
 
-const AddProject = ({setDataArray, setShowAddProject, setError}) => {
+const AddProject = ({setDataArray, setShowAddProject, setError, setEditData, editData, setIsEdit, isEdit}) => {
 
     const options = [
         { value: 'reactjs', label: 'React Js' },
@@ -17,6 +17,14 @@ const AddProject = ({setDataArray, setShowAddProject, setError}) => {
     const [skills, setSkills] =useState([]);
     const [member, setMember] =useState(0);
     const [isActive, setIsActive] =useState(false);
+
+    useEffect(() => {
+        setName(editData.name)
+        setDesc(editData.description)
+        setMember(editData.members)
+        setIsActive(editData.isActive)
+
+    }, [isEdit])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,23 +41,42 @@ const AddProject = ({setDataArray, setShowAddProject, setError}) => {
             return;
         }
 
-        if(newSkills.length === 0) {
+        if(!isEdit && newSkills.length === 0) {
             setError('Atleast one skill should be selected ')
             console.log('Atleast one skill should be selected')
             return;
         }
+        let obj;
 
-        let obj = {
-            name: name,
-            description: desc,
-            skill: newSkills,
-            members: member,
-            isActive: isActive,
-            createdAt: new Date().toLocaleString()
+        if(isEdit){
+
+            obj = {
+                name: name,
+                description: desc,
+                skill: editData.skill,
+                members: member,
+                isActive: isActive,
+                createdAt: new Date().toLocaleString()
+            }
+        }else {
+            obj = {
+                name: name,
+                description: desc,
+                skill: newSkills,
+                members: member,
+                isActive: isActive,
+                createdAt: new Date().toLocaleString()
+            }
+        } 
+
+
+        if(isEdit) {
+            setDataArray((state) => [...state, dataArray.filter((item, ind) => ind === index )[0]])
         }
         
         setDataArray((state) => [...state, obj ]);
         setShowAddProject(false)
+        setIsEdit(false)
         setError('')
     }
 
@@ -63,7 +90,7 @@ const AddProject = ({setDataArray, setShowAddProject, setError}) => {
         <div className='w-4/5 mx-auto py-10 '>
             
             <h1 className='text-3xl py-5 text-center text-black font-medium'>
-                Add Project
+                {isEdit ? 'Edit Project' : 'Add Project'}
             </h1>
 
 
@@ -88,6 +115,7 @@ const AddProject = ({setDataArray, setShowAddProject, setError}) => {
                     onChange={(e) => handleMultiChange(e)}
                     value={skills}
                     styles={{width: '50%'}}
+                    isDisabled={isEdit}
                 />
 
                 <select 
@@ -104,8 +132,8 @@ const AddProject = ({setDataArray, setShowAddProject, setError}) => {
                 </select>
 
                 <div className='inline-flex items-center space-x-5'>
-                    <input type="checkbox" className='w-5 h-5' name='check' id='check' value={isActive} onChange={ (e) => setIsActive(!isActive) } />
-                    <label for="check" className='text-lg text-black font-normal'>Is Active</label>
+                    <input type="checkbox" className='w-5 h-5' name='check' id='check' checked={isActive} onChange={ (e) => setIsActive(!isActive) } />
+                    <label htmlFor="check" className='text-lg text-black font-normal'>Is Active</label>
                 </div>
 
                 <div className='flex flex-row items-center space-x-5'>
