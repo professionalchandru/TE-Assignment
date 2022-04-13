@@ -84,7 +84,7 @@ const App = () => {
       {/* Top section */}
       <div className='w-4/5 mt-20 mx-auto flex items-center justify-between'>
         <button onClick={() => setShowAddProject(!showAddProject)} 
-          className=" px-8 py-3 bg-blue-600 text-white font-medium text-base rounded-md"
+          className={` px-8 py-3 bg-blue-600 disabled:bg-blue-300 text-white font-medium text-base rounded-md`}
           disabled={isEdit}
         >
           Add Project
@@ -128,7 +128,11 @@ const App = () => {
               </th>
 
               <th className='px-2 py-3 border-r border-white'>
-                Action
+                Edit Action
+              </th>
+
+              <th className='px-2 py-3 border-r border-white'>
+                Delete Action
               </th>
             </tr>
           </thead>

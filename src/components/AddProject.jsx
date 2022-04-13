@@ -23,7 +23,6 @@ const AddProject = ({setDataArray, dataArray, setShowAddProject, setError, setEd
         setDesc(editData.description)
         setMember(editData.members)
         setIsActive(editData.isActive)
-
     }, [isEdit])
 
     const handleSubmit = (e) => {
