@@ -17,6 +17,8 @@ const App = () => {
 
   const [error, setError] = useState('')
 
+  const [editIndex, setEditIndex] = useState(-1);
+
   useEffect(() => {
     if(searchText.length){
       let search = dataArray.filter((data) => data.name.includes(searchText) || data.description.includes(searchText) )
@@ -62,6 +64,13 @@ const App = () => {
     setIsEdit(true)
     setShowAddProject(true)
     setEditData(dataArray.filter((item, ind) => ind === index )[0])
+    setEditIndex(index)
+  }
+
+  const handleDelete = (index) => {
+    if(window.confirm("Are you sure to delete this row?")){
+      setDataArray(dataArray.filter((item, ind) => ind !== index));
+    } 
   }
 
   return (
@@ -76,6 +85,7 @@ const App = () => {
       <div className='w-4/5 mt-20 mx-auto flex items-center justify-between'>
         <button onClick={() => setShowAddProject(!showAddProject)} 
           className=" px-8 py-3 bg-blue-600 text-white font-medium text-base rounded-md"
+          disabled={isEdit}
         >
           Add Project
         </button>
@@ -164,6 +174,10 @@ const App = () => {
                 <td onClick={() => handleEdit(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
                   Edit
                 </td>
+
+                <td onClick={() => handleDelete(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
+                  Delete
+                </td>
               </tr>
             )
           }) : 
@@ -207,6 +221,10 @@ const App = () => {
                   <td onClick={() => handleEdit(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
                     Edit
                   </td>
+
+                  <td onClick={() => handleDelete(index)} className='px-2 py-3 border-r border-white cursor-pointer'>
+                    Delete
+                  </td>
                 </tr>
               )
               })
@@ -220,7 +238,18 @@ const App = () => {
     {/* Add Project Section */}
     {showAddProject &&
       <section>
-        <AddProject setEditData={setEditData} editData={editData} setIsEdit={setIsEdit} isEdit={isEdit} setDataArray={setDataArray} setShowAddProject={setShowAddProject} setError={setError} />
+        <AddProject 
+          setEditData={setEditData} 
+          editData={editData} 
+          setIsEdit={setIsEdit} 
+          isEdit={isEdit} 
+          setDataArray={setDataArray} 
+          dataArray={dataArray} 
+          editIndex={editIndex} 
+          setEditIndex={setEditIndex} 
+          setShowAddProject={setShowAddProject} 
+          setError={setError}
+        />
       </section>
     }
 

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 
 import Select from 'react-select'
 
-const AddProject = ({setDataArray, setShowAddProject, setError, setEditData, editData, setIsEdit, isEdit}) => {
+const AddProject = ({setDataArray, dataArray, setShowAddProject, setError, setEditData, editData, setIsEdit, isEdit, editIndex, setEditIndex}) => {
 
     const options = [
         { value: 'reactjs', label: 'React Js' },
@@ -71,10 +71,15 @@ const AddProject = ({setDataArray, setShowAddProject, setError, setEditData, edi
 
 
         if(isEdit) {
-            setDataArray((state) => [...state, dataArray.filter((item, ind) => ind === index )[0]])
+            let newDataArray = [...dataArray];
+            newDataArray[editIndex] = obj;
+            setDataArray(newDataArray);
+            setEditIndex(-1)
+            setEditData({})
+        } else {
+            setDataArray((state) => [...state, obj ]);
         }
         
-        setDataArray((state) => [...state, obj ]);
         setShowAddProject(false)
         setIsEdit(false)
         setError('')
@@ -83,6 +88,12 @@ const AddProject = ({setDataArray, setShowAddProject, setError, setEditData, edi
     const handleMultiChange = (event) => {
         setSkills(event)
       }
+
+    const handleReset = () => {
+        setShowAddProject(false);
+        setEditData({}); 
+        setIsEdit(false);
+    }
 
   return (
       <>
@@ -145,7 +156,7 @@ const AddProject = ({setDataArray, setShowAddProject, setError, setEditData, edi
 
                     <button type='reset' 
                         className=" px-8 py-3 bg-gray-500 text-white font-medium text-base rounded-md"
-                        onClick={() => setShowAddProject(false)}
+                        onClick={() => handleReset()}
                     >
                         Back
                     </button>
